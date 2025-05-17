@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-OmbudsmanApplication<ombudsman>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.ombudsman.ombudsman.OmbudsmanApplication",
+            "projectName": "ombudsman",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
