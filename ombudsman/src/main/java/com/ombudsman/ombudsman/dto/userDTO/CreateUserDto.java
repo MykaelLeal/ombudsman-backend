@@ -1,8 +1,11 @@
+package com.ombudsman.ombudsman.dto.userDTO;
+
+
 public record CreateUserDto(
 
         String email,
-        String password,
-        RoleName role
+        String password
+      
 
 ) {
 }

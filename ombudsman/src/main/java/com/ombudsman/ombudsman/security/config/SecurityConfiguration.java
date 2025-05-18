@@ -13,7 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.School.SchoolReportSystem.security.auth.UserAuthenticationFilter;
+import com.ombudsman.ombudsman.security.auth.UserAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -28,41 +29,31 @@ public class SecurityConfiguration {
         "/users"              // Criação de novo usuário
     };
 
-    // Endpoints que requerem autenticação para serem acessados (usuário logado)
-    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-        "/disciplinas/",             // Listar disciplinas (GET)
-        "/disciplinas/create",      // Criar disciplina (POST)
-        "/disciplinas/{id}",       // Buscar disciplina por ID (GET)
-        "/disciplinas/{id}",      // Atualizar disciplina (PUT)
-        "/disciplinas/{id}",     // Deletar disciplina (DELETE)
+   // Endpoints que requerem autenticação para serem acessados (usuário logado)
+   public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
 
+    // Elogios
+    "/api/elogios",             // Listar elogios (GET)
+    "/api/elogios/create",      // Criar elogio (POST)
+    "/api/elogios/{id}",        // Buscar elogio por ID (GET)
+    "/api/elogios/{id}",        // Atualizar elogio (PUT)
+    "/api/elogios/{id}",        // Deletar elogio (DELETE)
 
-        "/notas/create",                                     // Criar nota (POST)
-        "/notas/aluno",                                     // Listar notas do aluno (GET)
-        "/notas/disciplina/{id}",                          // Listar notas de uma disciplina (GET)
-        "/notas/{id}",                                    // Atualizar nota por ID (PUT)
-        "/notas/{id}",                                   // Deletar nota por ID (DELETE)
-        "/notas/disciplina/{disciplinaId}/aluno/{alunoId}",  // Atualizar nota por disciplina e aluno (PUT)
+    // Sugestões
+    "/api/sugestoes",             // Listar sugestões (GET)
+    "/api/sugestoes/create",      // Criar sugestão (POST)
+    "/api/sugestoes/{id}",        // Buscar sugestão por ID (GET)
+    "/api/sugestoes/{id}",        // Atualizar sugestão (PUT)
+    "/api/sugestoes/{id}",        // Deletar sugestão (DELETE)
 
-    };
+    // Reclamações
+    "/api/reclamacoes",             // Listar reclamações (GET)
+    "/api/reclamacoes/create",      // Criar reclamação (POST)
+    "/api/reclamacoes/{id}",        // Buscar reclamação por ID (GET)
+    "/api/reclamacoes/{id}",        // Atualizar reclamação (PUT)
+    "/api/reclamacoes/{id}",        // Deletar reclamação (DELETE)
+};
 
-    // Endpoints acessíveis apenas por usuários com permissão de Aluno
-    public static final String[] ENDPOINTS_ALUNO = {
-        "/users/test/aluno",
-        "/notas/aluno",                  // Visualizar suas notas
-        "/disciplinas/"                 // Visualizar disciplinas disponíveis
-    };
-
-    // Endpoints acessíveis apenas por usuários com permissão de Professor
-    public static final String[] ENDPOINTS_PROFESSOR = {
-        "/users/test/professor",
-        "/disciplinas/create",                  // Criar disciplina (POST)
-        "/disciplinas/{id}",                   // Buscar disciplina por ID (GET)
-        "/disciplinas/{id}",                  // Atualizar disciplina por ID (PUT)
-        "/notas/create",                     // Criar nota (POST)
-        "/notas/aluno",                     // Listar notas do aluno (GET)
-
-    };
 
 
     @Bean
@@ -71,8 +62,6 @@ public class SecurityConfiguration {
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(requests -> requests // Habilita a autorização para as requisições HTTP
                 .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
                 .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-                .requestMatchers(ENDPOINTS_PROFESSOR).hasRole("PROFESSOR") 
-                .requestMatchers(ENDPOINTS_ALUNO).hasRole("ALUNO")
                 .anyRequest().denyAll()).addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

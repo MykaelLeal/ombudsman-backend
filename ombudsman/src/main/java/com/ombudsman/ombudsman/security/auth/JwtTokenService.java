@@ -2,16 +2,12 @@ package com.ombudsman.ombudsman.security.auth;
 
 import org.springframework.stereotype.Service;
 
-import com.ombudsman.ombudsman.security.Algorithm;
 import com.ombudsman.ombudsman.security.userdetails.UserDetailsImpl;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import org.springframework.stereotype.Service;
-
-import com.School.SchoolReportSystem.security.userdetails.UserDetailsImpl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
