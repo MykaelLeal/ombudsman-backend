@@ -1,6 +1,8 @@
 package com.ombudsman.ombudsman.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,6 +58,7 @@ public class UserService {
 
         // Cria um novo usuário com os dados fornecidos
         User newUser = User.builder()
+        .nome(createUserDto.nome())
         .email(createUserDto.email())
         // Codifica a senha do usuário com o algoritmo bcrypt
         .password(securityConfiguration.passwordEncoder().encode(createUserDto.password()))
@@ -65,6 +68,13 @@ public class UserService {
         userRepository.save(newUser);
     }
 
+    // Buscar todos os usuários
+    public List<User> getAllUsers() {
+      return userRepository.findAll();
+
+    }
+
+    
     // Busacr Usuário por ID
     public User getUserById(Long id) {
       return userRepository.findById(id)
@@ -83,6 +93,14 @@ public class UserService {
         String email = authentication.getName();
         return userRepository.findByEmail(email)
                 .orElseThrow();
+    }
+
+    // Deletar usuário por ID
+    public void deleteUserById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("Usuário não encontrado.");
+        }
+        userRepository.deleteById(id);
     }
 
 

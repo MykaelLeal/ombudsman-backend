@@ -13,7 +13,7 @@ import com.ombudsman.ombudsman.service.ReclamacaoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reclamacoes")
+@RequestMapping("/reclamacoes")
 public class ReclamacaoController {
 
     @Autowired

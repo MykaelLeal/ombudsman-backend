@@ -13,7 +13,7 @@ import com.ombudsman.ombudsman.service.SugestaoService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/sugestoes")
+@RequestMapping("/sugestoes")
 public class SugestaoController {
 
     @Autowired

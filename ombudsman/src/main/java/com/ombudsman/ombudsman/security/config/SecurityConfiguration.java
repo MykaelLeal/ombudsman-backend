@@ -33,25 +33,25 @@ public class SecurityConfiguration {
    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
 
     // Elogios
-    "/api/elogios",             // Listar elogios (GET)
-    "/api/elogios/create",      // Criar elogio (POST)
-    "/api/elogios/{id}",        // Buscar elogio por ID (GET)
-    "/api/elogios/{id}",        // Atualizar elogio (PUT)
-    "/api/elogios/{id}",        // Deletar elogio (DELETE)
+    "/elogios/",             // Listar elogios (GET)
+    "/elogios/create",      // Criar elogio (POST)
+    "/elogios/{id}",        // Buscar elogio por ID (GET)
+    "/elogios/{id}",        // Atualizar elogio (PUT)
+    "/elogios/{id}",        // Deletar elogio (DELETE)
 
     // Sugestões
-    "/api/sugestoes",             // Listar sugestões (GET)
-    "/api/sugestoes/create",      // Criar sugestão (POST)
-    "/api/sugestoes/{id}",        // Buscar sugestão por ID (GET)
-    "/api/sugestoes/{id}",        // Atualizar sugestão (PUT)
-    "/api/sugestoes/{id}",        // Deletar sugestão (DELETE)
+    "/sugestoes/",             // Listar sugestões (GET)
+    "/sugestoes/create",      // Criar sugestão (POST)
+    "/sugestoes/{id}",        // Buscar sugestão por ID (GET)
+    "/sugestoes/{id}",        // Atualizar sugestão (PUT)
+    "/sugestoes/{id}",        // Deletar sugestão (DELETE)
 
     // Reclamações
-    "/api/reclamacoes",             // Listar reclamações (GET)
-    "/api/reclamacoes/create",      // Criar reclamação (POST)
-    "/api/reclamacoes/{id}",        // Buscar reclamação por ID (GET)
-    "/api/reclamacoes/{id}",        // Atualizar reclamação (PUT)
-    "/api/reclamacoes/{id}",        // Deletar reclamação (DELETE)
+    "/reclamacoes/",             // Listar reclamações (GET)
+    "/reclamacoes/create",      // Criar reclamação (POST)
+    "/reclamacoes/{id}",        // Buscar reclamação por ID (GET)
+    "/reclamacoes/{id}",        // Atualizar reclamação (PUT)
+    "/reclamacoes/{id}",        // Deletar reclamação (DELETE)
 };
 
 

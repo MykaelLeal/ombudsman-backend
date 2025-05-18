@@ -22,7 +22,7 @@ import com.ombudsman.ombudsman.entitie.Elogio;
 import com.ombudsman.ombudsman.service.ElogioService;
 
 @RestController
-@RequestMapping("/api/elogios")
+@RequestMapping("/elogios")
 public class ElogioController {
 
     @Autowired
