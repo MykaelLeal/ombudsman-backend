@@ -9,6 +9,7 @@ import com.ombudsman.ombudsman.repository.SugestaoRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SugestaoService {
@@ -35,6 +36,20 @@ public class SugestaoService {
         User user = userService.getAuthenticatedUser();
         return sugestaoRepository.findByUser(user);
     }
+
+
+    // Método responsável por buscar sugestões por ID
+    public Optional<Sugestao> findById(Long id) {
+       return sugestaoRepository.findById(id);
+
+    }
+
+
+    // Método responsável por salvar uma sugestão
+    public Sugestao salvar(Sugestao sugestao) {
+        return sugestaoRepository.save(sugestao);
+    }
+
 
     // Atualizar sugestão por ID
     public Sugestao updateSugestao(Long sugestaoId, String novoTitulo, String novaDescricao) {

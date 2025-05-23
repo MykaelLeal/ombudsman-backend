@@ -3,6 +3,7 @@ package com.ombudsman.ombudsman.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,6 @@ public class ElogioController {
       Elogio elogio = elogioService.createElogio(elogioDTO.getTitulo(), elogioDTO.getDescricao(), LocalDateTime.now());
        ElogioResponseDTO response = new ElogioResponseDTO("Elogio criado com sucesso.", elogio);
        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
     }
 
 
@@ -43,6 +43,20 @@ public class ElogioController {
     public ResponseEntity<List<Elogio>> getAllElogios() {
         List<Elogio> elogios = elogioService.getAllElogios();
         return ResponseEntity.ok(elogios);
+    }
+
+
+    // Busca elogio por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<ElogioResponseDTO> getElogioById(@PathVariable Long id) {
+        Optional<Elogio> elogioOpt = elogioService.findById(id);
+        if (elogioOpt.isPresent()) {
+            ElogioResponseDTO response = new ElogioResponseDTO("Elogio encontrado com sucesso.", elogioOpt.get());
+            return ResponseEntity.ok(response);
+        } else {
+            ElogioResponseDTO response = new ElogioResponseDTO("Elogio não encontrado.", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
 

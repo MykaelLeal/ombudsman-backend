@@ -3,9 +3,11 @@ package com.ombudsman.ombudsman.dto.reclamacaoDTO;
 import com.ombudsman.ombudsman.entitie.Reclamacao;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class ReclamacaoResponseDTO {
     private String mensagem;

@@ -11,6 +11,7 @@ import com.ombudsman.ombudsman.entitie.Sugestao;
 import com.ombudsman.ombudsman.service.SugestaoService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/sugestoes")
@@ -39,6 +40,19 @@ public class SugestaoController {
         return ResponseEntity.ok(sugestoes);
     }
 
+
+    // Buscar sugestões por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<SugestaoResponseDTO> getSugestaoById(@PathVariable Long id) {
+        Optional<Sugestao> sugestaoOpt = sugestaoService.findById(id);
+        if (sugestaoOpt.isPresent()) {
+            SugestaoResponseDTO response = new SugestaoResponseDTO("Sugestão encontrada com sucesso.", sugestaoOpt.get());
+            return ResponseEntity.ok(response);
+        } else {
+            SugestaoResponseDTO response = new SugestaoResponseDTO("Sugestão não encontrada.", null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
 
     // Atualizar sugestão
     @PutMapping("/{id}")

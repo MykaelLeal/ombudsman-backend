@@ -2,6 +2,7 @@ package com.ombudsman.ombudsman.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,18 @@ public class ReclamacaoService {
     public List<Reclamacao> getAllReclamacoes() {
         User user = userService.getAuthenticatedUser();
         return reclamacaoRepository.findByUser(user);
+    }
+
+    // Método responsável por buscar reclamações por ID
+    public Optional<Reclamacao> findById(Long id) {
+       return reclamacaoRepository.findById(id);
+
+    }
+
+
+    // Método responsável por salvar uma Reclamação
+    public Reclamacao salvar(Reclamacao reclamacao) {
+        return reclamacaoRepository.save(reclamacao);
     }
 
 

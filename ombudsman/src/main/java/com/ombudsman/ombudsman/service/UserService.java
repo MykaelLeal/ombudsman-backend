@@ -75,7 +75,7 @@ public class UserService {
     }
 
     
-    // Busacr Usuário por ID
+    // Busca Usuário por ID
     public User getUserById(Long id) {
       return userRepository.findById(id)
         .orElseThrow();

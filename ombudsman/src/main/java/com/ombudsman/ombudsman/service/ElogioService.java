@@ -3,6 +3,8 @@ package com.ombudsman.ombudsman.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,19 @@ public class ElogioService {
     public List<Elogio> getAllElogios() {
         User user = userService.getAuthenticatedUser();
         return elogioRepository.findByUser(user);
+    }
+
+
+    // Método responsável por buscar elogio por ID
+    public Optional<Elogio> findById(Long id) {
+       return elogioRepository.findById(id);
+
+    }
+
+
+    // Método responsável por salvar um elogio
+    public Elogio salvar(Elogio elogio) {
+        return elogioRepository.save(elogio);
     }
 
 
