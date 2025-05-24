@@ -2,6 +2,7 @@ package com.ombudsman.ombudsman.service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.ombudsman.ombudsman.dto.userDTO.CreateUserDto;
 import com.ombudsman.ombudsman.dto.userDTO.LoginUserDTO;
 import com.ombudsman.ombudsman.dto.userDTO.RecoveryJwtTokenDto;
+import com.ombudsman.ombudsman.entitie.Elogio;
 import com.ombudsman.ombudsman.entitie.User;
 import com.ombudsman.ombudsman.repository.UserRepository;
 import com.ombudsman.ombudsman.security.auth.JwtTokenService;
@@ -55,7 +57,6 @@ public class UserService {
         if (userRepository.existsByEmail(createUserDto.email())) {
            throw new RuntimeException("Email já cadastrado.");
     }
-
         // Cria um novo usuário com os dados fornecidos
         User newUser = User.builder()
         .nome(createUserDto.nome())
@@ -68,32 +69,43 @@ public class UserService {
         userRepository.save(newUser);
     }
 
-    // Buscar todos os usuários
+    // Método Responsavel por buscar todos os usuários
     public List<User> getAllUsers() {
       return userRepository.findAll();
 
     }
 
     
-    // Busca Usuário por ID
-    public User getUserById(Long id) {
-      return userRepository.findById(id)
-        .orElseThrow();
-}
+    // Método Responsavel por buscar os usuários por ID
+    public Optional<User> findById(Long id) {
+      return userRepository.findById(id);
+    }
+
 
     // Busca usuários autenticados
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication == null || !authentication.isAuthenticated() 
             || authentication.getPrincipal().equals("anonymousUser")) {
             throw new RuntimeException("Usuário não autenticado.");
         }
-
         String email = authentication.getName();
         return userRepository.findByEmail(email)
                 .orElseThrow();
     }
+
+
+    // Método responsavel por atualizar o usuário por ID
+    public User updateUser(Long userId, String novoNome, String novoEmail, String novaSenha) {
+      User user = userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        user.setNome(novoNome);
+        user.setEmail(novoEmail);
+        user.setPassword(novaSenha); 
+        return userRepository.save(user);
+    }
+
 
     // Deletar usuário por ID
     public void deleteUserById(Long id) {

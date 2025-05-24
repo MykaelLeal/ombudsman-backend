@@ -25,33 +25,38 @@ public class SecurityConfiguration {
 
     // Endpoints que NÃO requerem autenticação para serem acessados (públicos)
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-        "/users/login",       // Login de usuário
-        "/users"              // Criação de novo usuário
+        "/users/login",          // Login de usuário
+        "/users",               // Criação de novo usuário
+        "/users/",             // Listar todos os usuários
+        "/users/*",           // Buscar usuários por ID
+        "/users/*",          //  Deletar usuário por ID
+
+                     
     };
 
    // Endpoints que requerem autenticação para serem acessados (usuário logado)
    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
 
     // Elogios
-    "/elogios/",             // Listar elogios (GET)
-    "/elogios/create",      // Criar elogio (POST)
-    "/elogios/{id}",        // Buscar elogio por ID (GET)
-    "/elogios/{id}",        // Atualizar elogio (PUT)
-    "/elogios/{id}",        // Deletar elogio (DELETE)
+    "/elogios/",               // Listar elogios (GET)
+    "/elogios/create",        // Criar elogio (POST)
+    "/elogios/*",            // Buscar elogio por ID (GET)
+    "/elogios/*",           // Atualizar elogio (PATCH)
+    "/elogios/*",          // Deletar elogio (DELETE)
 
     // Sugestões
     "/sugestoes/",             // Listar sugestões (GET)
     "/sugestoes/create",      // Criar sugestão (POST)
-    "/sugestoes/{id}",        // Buscar sugestão por ID (GET)
-    "/sugestoes/{id}",        // Atualizar sugestão (PUT)
-    "/sugestoes/{id}",        // Deletar sugestão (DELETE)
+    "/sugestoes/*",          // Buscar sugestão por ID (GET)
+    "/sugestoes/*",         // Atualizar sugestão (PATCH)
+    "/sugestoes/*",        // Deletar sugestão (DELETE)
 
     // Reclamações
     "/reclamacoes/",             // Listar reclamações (GET)
     "/reclamacoes/create",      // Criar reclamação (POST)
-    "/reclamacoes/{id}",        // Buscar reclamação por ID (GET)
-    "/reclamacoes/{id}",        // Atualizar reclamação (PUT)
-    "/reclamacoes/{id}",        // Deletar reclamação (DELETE)
+    "/reclamacoes/*",          // Buscar reclamação por ID (GET)
+    "/reclamacoes/*",         // Atualizar reclamação (PATCH)
+    "/reclamacoes/*",        // Deletar reclamação (DELETE)
 };
 
 

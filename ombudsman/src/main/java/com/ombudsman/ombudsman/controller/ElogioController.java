@@ -2,7 +2,9 @@ package com.ombudsman.ombudsman.controller;
 
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,7 @@ public class ElogioController {
 
 
     // Listar todos os elogios do usuário autenticado
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<Elogio>> getAllElogios() {
         List<Elogio> elogios = elogioService.getAllElogios();
         return ResponseEntity.ok(elogios);
@@ -71,10 +73,11 @@ public class ElogioController {
 
     // Deletar elogio
     @DeleteMapping("/{id}")
-    public ResponseEntity<ElogioResponseDTO> deleteElogio(@PathVariable Long id) {
-        Elogio elogioExcluido = elogioService.deleteElogio(id);
-        ElogioResponseDTO response = new ElogioResponseDTO("Elogio deletado com sucesso.", elogioExcluido);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Map<String, String>> deleteElogio(@PathVariable Long id) {
+        elogioService.deleteElogioByID(id);
+        Map<String, String> msg = new HashMap<>();
+        msg.put("mensagem", "Elogio deletado com sucesso.");
+        return ResponseEntity.ok(msg);
     }
     
 }
