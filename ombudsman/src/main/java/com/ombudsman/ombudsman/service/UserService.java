@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.ombudsman.ombudsman.dto.userDTO.CreateUserDto;
 import com.ombudsman.ombudsman.dto.userDTO.LoginUserDTO;
 import com.ombudsman.ombudsman.dto.userDTO.RecoveryJwtTokenDto;
-import com.ombudsman.ombudsman.entitie.Elogio;
 import com.ombudsman.ombudsman.entitie.User;
 import com.ombudsman.ombudsman.repository.UserRepository;
 import com.ombudsman.ombudsman.security.auth.JwtTokenService;

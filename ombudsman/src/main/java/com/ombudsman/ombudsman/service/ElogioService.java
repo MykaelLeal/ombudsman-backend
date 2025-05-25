@@ -44,6 +44,7 @@ public class ElogioService {
 
     // Método responsável por buscar elogio por ID
     public Optional<Elogio> findById(Long id) {
+       userService.getAuthenticatedUser();
        return elogioRepository.findById(id);
 
     }

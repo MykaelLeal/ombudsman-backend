@@ -40,6 +40,7 @@ public class SugestaoService {
 
     // Método responsável por buscar sugestões por ID
     public Optional<Sugestao> findById(Long id) {
+       userService.getAuthenticatedUser();
        return sugestaoRepository.findById(id);
 
     }

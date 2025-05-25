@@ -42,6 +42,7 @@ public class ReclamacaoService {
 
     // Método responsável por buscar reclamações por ID
     public Optional<Reclamacao> findById(Long id) {
+       userService.getAuthenticatedUser();
        return reclamacaoRepository.findById(id);
 
     }

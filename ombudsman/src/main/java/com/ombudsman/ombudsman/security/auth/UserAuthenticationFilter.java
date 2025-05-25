@@ -2,7 +2,6 @@ package com.ombudsman.ombudsman.security.auth;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,35 +64,10 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
-    // Verifica se o endpoint requer autenticação antes de processar a requisição
+     // Verifica se o endpoint requer autenticação antes de processar a requisição
     private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
-      String path = request.getRequestURI();
-      List<String> publicEndpoints = Arrays.asList(
-            "/users/login",
-            "/users"
-        );
-
-        // Se o path é exatamente /users/login ou /users (ex: criação)
-        if (publicEndpoints.contains(path)) {
-            return false; // NÃO precisa autenticação
-        }
-
-        // Se o path começar com /users/ e depois tiver algo (ex: /users/1)
-        if (path.startsWith("/users/")) {
-            return false; // libera acesso para /users/{id}
-        }
-
-    return true;
-}
-
-
-
-
-
-
-
-
-
-
+        String requestURI = request.getRequestURI();
+        return !Arrays.asList(SecurityConfiguration.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).contains(requestURI);
+    }
 
 }
