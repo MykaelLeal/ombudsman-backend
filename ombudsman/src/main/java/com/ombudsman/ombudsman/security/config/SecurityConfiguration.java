@@ -31,6 +31,11 @@ public class SecurityConfiguration {
         "/users/*",           // Buscar usuários por ID
         "/users/*",          //  Deletar usuário por ID
 
+        // Swagger
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html"
+
                      
     };
 

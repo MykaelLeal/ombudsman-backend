@@ -25,6 +25,10 @@ import com.ombudsman.ombudsman.dto.userDTO.UserResponseDTO;
 import com.ombudsman.ombudsman.entitie.User;
 import com.ombudsman.ombudsman.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -40,7 +44,11 @@ public class UserController {
     }
 
 
-    // Cria o Usuário
+    @Operation(summary = "Criar um usuário", description = "Cria um novo usuário com nome, email e senha.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso."),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos.")
+    })
     @PostMapping
     public ResponseEntity<Map<String, String>> createUser(@RequestBody CreateUserDto createUserDto) {
         userService.createUser(createUserDto);
@@ -50,7 +58,11 @@ public class UserController {
     }
 
 
-    // Buscar todos os usuários
+    @Operation(summary = "Listar todos os usuário", description = "Retorna a lista de todos os usuários cadastrados.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Usuários não encontrados.")
+    })
     @GetMapping("/")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
@@ -58,7 +70,11 @@ public class UserController {
     }
 
 
-    // Buscar o usuário por ID
+    @Operation(summary = "Buscar usuários por ID", description = "Retorna um usuário específico pelo seu ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso."),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado.")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> userOpt = userService.findById(id);
@@ -70,6 +86,12 @@ public class UserController {
     }
 
 
+    
+    @Operation(summary = "Atualizar um usuário", description = "Atualiza os dados de um usuário específico.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso."),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado.")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO userDTO) {
         User userAtualizado = userService.updateUser(id, userDTO.getNome(), userDTO.getEmail(), userDTO.getSenha());
@@ -78,7 +100,11 @@ public class UserController {
     }
 
 
-    // Deletar usuário por ID
+    @Operation(summary = "Deletar um usuário", description = "Remove um usuário pelo seu ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Usuário deletado com sucesso."),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado.")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);

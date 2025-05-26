@@ -10,6 +10,10 @@ import com.ombudsman.ombudsman.dto.reclamacaoDTO.ReclamacaoResponseDTO;
 import com.ombudsman.ombudsman.entitie.Reclamacao;
 import com.ombudsman.ombudsman.service.ReclamacaoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +24,12 @@ public class ReclamacaoController {
     @Autowired
     private ReclamacaoService reclamacaoService;
 
-    // Cadastrar reclamação
+
+    @Operation(summary = "Criar uma reclamação", description = "Cria uma nova reclamação com título, descrição e data atual.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Reclamação criada com sucesso."),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos.")
+    })
     @PostMapping("/create")
     public ResponseEntity<ReclamacaoResponseDTO> createReclamacao(@RequestBody ReclamacaoRequestDTO reclamacaoDTO) {
         Reclamacao reclamacaoCriada = reclamacaoService.createReclamacao(
@@ -33,7 +42,11 @@ public class ReclamacaoController {
     }
 
 
-    // Listar todas as reclamações do usuário autenticado
+    @Operation(summary = "Listar todas as reclamações do usuário", description = "Retorna a lista de todas as reclamações cadastradas pelo usuário.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Reclamações não encontradas.")
+    })
     @GetMapping("/")
     public ResponseEntity<List<Reclamacao>> getAllReclamacoes() {
         List<Reclamacao> reclamacoes = reclamacaoService.getAllReclamacoes();
@@ -41,7 +54,11 @@ public class ReclamacaoController {
     }
 
 
-    // Busca reclamação por ID
+    @Operation(summary = "Buscar reclamação por ID", description = "Retorna uma reclamação específica pelo seu ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Reclamação encontrada com sucesso."),
+        @ApiResponse(responseCode = "404", description = "Reclamação não encontrada.")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ReclamacaoResponseDTO> getReclamacaoById(@PathVariable Long id) {
         Optional<Reclamacao> reclamacaoOpt = reclamacaoService.findById(id);
@@ -55,7 +72,11 @@ public class ReclamacaoController {
     }
 
 
-    // Atualizar reclamação
+    @Operation(summary = "Atualizar uma reclamação", description = "Atualiza os dados de uma reclamação específica.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Reclamação atualizada com sucesso."),
+        @ApiResponse(responseCode = "404", description = "Reclamação não encontrada.")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Reclamacao> updateReclamacao(@PathVariable Long id, @RequestBody ReclamacaoRequestDTO reclamacaoDTO) {
         Reclamacao reclamacaoAtualizada = reclamacaoService.updateReclamacao(id, reclamacaoDTO.getTitulo(), reclamacaoDTO.getDescricao());
@@ -63,7 +84,11 @@ public class ReclamacaoController {
     }
 
 
-    // Deletar reclamação
+    @Operation(summary = "Deletar uma reclamação", description = "Remove uma reclamação pelo seu ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Reclamação deletada com sucesso."),
+        @ApiResponse(responseCode = "404", description = "Reclamação não encontrada.")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteReclamacao(@PathVariable Long id) {
         reclamacaoService.deleteReclamacao(id);

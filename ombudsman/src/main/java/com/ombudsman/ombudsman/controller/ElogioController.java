@@ -24,6 +24,10 @@ import com.ombudsman.ombudsman.dto.elogioDTO.ElogioResponseDTO;
 import com.ombudsman.ombudsman.entitie.Elogio;
 import com.ombudsman.ombudsman.service.ElogioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @RestController
 @RequestMapping("/elogios")
 public class ElogioController {
@@ -31,16 +35,24 @@ public class ElogioController {
     @Autowired
     private ElogioService elogioService;
 
-    // Cadastrar elogio
+    @Operation(summary = "Criar um elogio", description = "Cria um novo elogio com título, descrição e data atual.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Elogio criado com sucesso."),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos.")
+    })
     @PostMapping("/create")
     public ResponseEntity<ElogioResponseDTO> createElogio(@RequestBody ElogioRequestDTO elogioDTO) {
-      Elogio elogio = elogioService.createElogio(elogioDTO.getTitulo(), elogioDTO.getDescricao(), LocalDateTime.now());
+       Elogio elogio = elogioService.createElogio(elogioDTO.getTitulo(), elogioDTO.getDescricao(), LocalDateTime.now());
        ElogioResponseDTO response = new ElogioResponseDTO("Elogio criado com sucesso.", elogio);
        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
-    // Listar todos os elogios do usuário autenticado
+    @Operation(summary = "Listar todos os elogios.", description = "Retorna a lista de todos os elogios.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200"),
+        @ApiResponse(responseCode = "404", description = "Elogios não encontrados.")
+    })
     @GetMapping("/")
     public ResponseEntity<List<Elogio>> getAllElogios() {
         List<Elogio> elogios = elogioService.getAllElogios();
@@ -48,7 +60,11 @@ public class ElogioController {
     }
 
 
-    // Busca elogio por ID
+    @Operation(summary = "Buscar elogio por ID", description = "Retorna um elogio específico pelo seu ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Elogio encontrado com sucesso."),
+        @ApiResponse(responseCode = "404", description = "Elogio não encontrado.")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ElogioResponseDTO> getElogioById(@PathVariable Long id) {
         Optional<Elogio> elogioOpt = elogioService.findById(id);
@@ -62,7 +78,11 @@ public class ElogioController {
     }
 
 
-    // Atualizar elogio
+    @Operation(summary = "Atualizar um elogio", description = "Atualiza os dados de um elogio específico.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Elogio atualizado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Elogio não encontrado")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<ElogioResponseDTO> updateElogio(@PathVariable Long id, @RequestBody ElogioRequestDTO elogioDTO) {
         Elogio elogioAtualizado = elogioService.updateElogio(id, elogioDTO.getTitulo(), elogioDTO.getDescricao());
@@ -71,7 +91,11 @@ public class ElogioController {
     }
 
 
-    // Deletar elogio
+    @Operation(summary = "Deletar um elogio", description = "Remove um elogio pelo seu ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Elogio deletado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Elogio não encontrado")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteElogio(@PathVariable Long id) {
         elogioService.deleteElogioByID(id);
