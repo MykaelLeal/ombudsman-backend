@@ -68,7 +68,7 @@ public class SugestaoService {
     }
 
     // Deletar sugestão por ID
-    public Sugestao deleteSugestao(Long sugestaoId) {
+    public void deleteSugestao(Long sugestaoId) {
         User usuario = userService.getAuthenticatedUser();
         Sugestao sugestao = sugestaoRepository.findById(sugestaoId)
                 .orElseThrow(() -> new RuntimeException("Sugestão não encontrada."));
@@ -78,6 +78,6 @@ public class SugestaoService {
         }
 
         sugestaoRepository.delete(sugestao);
-        return sugestao;
+        
     }
 }

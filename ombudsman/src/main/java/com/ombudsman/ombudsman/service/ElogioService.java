@@ -74,7 +74,7 @@ public class ElogioService {
 
 
     // Deletar elogio por ID
-    public Elogio deleteElogioByID(Long elogioId) {
+    public void deleteElogioByID(Long elogioId) {
         User usuario = userService.getAuthenticatedUser();
         Elogio elogio = elogioRepository.findById(elogioId)
                 .orElseThrow(() -> new RuntimeException("Elogio não encontrado."));
@@ -85,7 +85,7 @@ public class ElogioService {
         }
 
         elogioRepository.delete(elogio);
-        return elogio;
+       
     }
 
 

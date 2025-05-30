@@ -72,7 +72,7 @@ public class ReclamacaoService {
 
 
     // Deletar Reclamação por ID
-    public Reclamacao deleteReclamacao(Long reclamacaoId) {
+    public void deleteReclamacao(Long reclamacaoId) {
         User usuario = userService.getAuthenticatedUser();
         Reclamacao reclamacao = reclamacaoRepository.findById(reclamacaoId)
                 .orElseThrow(() -> new RuntimeException("Reclamação não encontrada."));
@@ -83,7 +83,7 @@ public class ReclamacaoService {
         }
 
         reclamacaoRepository.delete(reclamacao);
-        return reclamacao;
+
     }
 
 

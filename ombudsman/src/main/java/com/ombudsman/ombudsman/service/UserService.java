@@ -52,7 +52,7 @@ public class UserService {
     }
 
     // Método responsável por criar um usuário
-    public void createUser(CreateUserDto createUserDto) {
+    public User createUser(CreateUserDto createUserDto) {
         if (userRepository.existsByEmail(createUserDto.email())) {
            throw new RuntimeException("Email já cadastrado.");
     }
@@ -65,7 +65,7 @@ public class UserService {
         .build();
 
         // Salva o novo usuário no banco de dados
-        userRepository.save(newUser);
+        return userRepository.save(newUser);
     }
 
     // Método Responsavel por buscar todos os usuários
