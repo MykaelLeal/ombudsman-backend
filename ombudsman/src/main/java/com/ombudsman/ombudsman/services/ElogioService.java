@@ -1,6 +1,5 @@
-package com.ombudsman.ombudsman.service;
+package com.ombudsman.ombudsman.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import java.util.Optional;
@@ -8,9 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ombudsman.ombudsman.entitie.Elogio;
-import com.ombudsman.ombudsman.entitie.User;
-import com.ombudsman.ombudsman.repository.ElogioRepository;
+import com.ombudsman.ombudsman.dtos.manifestacoesDto.RequestDto;
+import com.ombudsman.ombudsman.entities.Elogio;
+import com.ombudsman.ombudsman.entities.User;
+import com.ombudsman.ombudsman.repositories.ElogioRepository;
 
 @Service
 public class ElogioService {
@@ -22,19 +22,18 @@ public class ElogioService {
     private ElogioRepository elogioRepository;
 
     // Método responsável por cadastrar um elogio
-    public Elogio createElogio(String titulo, String descricao, LocalDateTime dataCriacao) {
-        // Busca o usuario autenticado
+    public Elogio createElogio(RequestDto elogioDto) {
         User user = userService.getAuthenticatedUser();
-        // Cadastra a um elogio
+
         Elogio elogio = new Elogio();
-        elogio.setTitulo(titulo);
-        elogio.setDescricao(descricao);
-        elogio.setDataCriacao(dataCriacao);
+        elogio.setTitulo(elogioDto.titulo());
+        elogio.setDescricao(elogioDto.descricao());
         elogio.setUser(user);
+
         return elogioRepository.save(elogio);
     }
 
-
+    
     // Método responsável por buscar todos os elogios
     public List<Elogio> getAllElogios() {
         User user = userService.getAuthenticatedUser();
@@ -57,7 +56,7 @@ public class ElogioService {
 
 
     // Atualizar elogio por ID
-    public Elogio updateElogio(Long elogioId, String novoTitulo, String novaDescricao) {
+    public Elogio updateElogio(Long elogioId, RequestDto elogioDto) {
         User usuario = userService.getAuthenticatedUser();
         Elogio elogio = elogioRepository.findById(elogioId)
                 .orElseThrow(() -> new RuntimeException("Elogio não encontrado."));
@@ -67,8 +66,9 @@ public class ElogioService {
             throw new RuntimeException("Você não tem permissão para atualizar este elogio.");
         }
 
-        elogio.setTitulo(novoTitulo);
-        elogio.setDescricao(novaDescricao);
+        elogio.setTitulo(elogioDto.titulo());
+        elogio.setDescricao(elogioDto.descricao());
+
         return elogioRepository.save(elogio);
     }
 

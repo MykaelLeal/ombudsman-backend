@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.ombudsman.ombudsman.entitie.User;
-import com.ombudsman.ombudsman.repository.UserRepository;
+import com.ombudsman.ombudsman.entities.User;
+import com.ombudsman.ombudsman.repositories.UserRepository;
 
 
 @Service

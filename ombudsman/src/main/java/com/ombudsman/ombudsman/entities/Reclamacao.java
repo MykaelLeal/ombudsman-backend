@@ -1,4 +1,4 @@
-package com.ombudsman.ombudsman.entitie;
+package com.ombudsman.ombudsman.entities;
 
 import java.time.LocalDateTime;
 

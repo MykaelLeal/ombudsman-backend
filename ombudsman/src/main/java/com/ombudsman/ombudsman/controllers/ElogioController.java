@@ -1,4 +1,4 @@
-package com.ombudsman.ombudsman.controller;
+package com.ombudsman.ombudsman.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ombudsman.ombudsman.dto.RequestDTO;
-import com.ombudsman.ombudsman.dto.ResponseDTO;
-import com.ombudsman.ombudsman.entitie.Elogio;
-import com.ombudsman.ombudsman.service.ElogioService;
+import com.ombudsman.ombudsman.dtos.manifestacoesDto.RequestDto;
+import com.ombudsman.ombudsman.dtos.responseMessageDto.ResponseDto;
+import com.ombudsman.ombudsman.entities.Elogio;
+import com.ombudsman.ombudsman.services.ElogioService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,21 +38,18 @@ public class ElogioController {
         @ApiResponse(responseCode = "201", description = "Elogio criado com sucesso."),
         @ApiResponse(responseCode = "400", description = "Dados inválidos.")
     })
-    @PostMapping("/create")
-    public ResponseEntity<ResponseDTO<Elogio>> createElogio(@Valid @RequestBody RequestDTO elogioDTO) {
-        Elogio elogio = elogioService.createElogio(
-            elogioDTO.getTitulo(), 
-            elogioDTO.getDescricao(), 
-            elogioDTO.getData());
+   @PostMapping("/create")
+    public ResponseEntity<ResponseDto<Elogio>> createElogio(@Valid @RequestBody RequestDto elogioDTO) {
+        Elogio elogio = elogioService.createElogio(elogioDTO);
 
         if (elogio == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ResponseDTO<>(400, "Dados inválidos.", null));
+                .body(new ResponseDto<>("Dados inválidos.", null));
         }
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ResponseDTO<>(201, "Elogio criado com sucesso.", elogio));
-    }
 
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ResponseDto<>("Elogio criado com sucesso.", elogio));
+    }
 
 
     @Operation(summary = "Listar todos os elogios.", description = "Retorna a lista de todos os elogios.")
@@ -61,14 +58,14 @@ public class ElogioController {
         @ApiResponse(responseCode = "404", description = "Nenhum elogio encontrado.")
     })
     @GetMapping("/")
-    public ResponseEntity<ResponseDTO<List<Elogio>>> getAllElogios() {
+    public ResponseEntity<ResponseDto<List<Elogio>>> getAllElogios() {
        List<Elogio> elogios = elogioService.getAllElogios();
 
         if (elogios.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseDTO<>(404, "Nenhum elogio encontrado.", elogios));
+                    .body(new ResponseDto<>("Nenhum elogio encontrado.", elogios));
         }
-        return ResponseEntity.ok(new ResponseDTO<>(200, "Elogios listados com sucesso.", elogios));
+        return ResponseEntity.ok(new ResponseDto<>("Elogios listados com sucesso.", elogios));
     }
 
 
@@ -79,15 +76,15 @@ public class ElogioController {
         @ApiResponse(responseCode = "404", description = "Elogio não encontrado.")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDTO<Elogio>> getElogioById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<Elogio>> getElogioById(@PathVariable Long id) {
         Optional<Elogio> elogioOpt = elogioService.findById(id);
 
-        if (elogioOpt.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDTO<>(200, "Elogio encontrado com sucesso.", elogioOpt.get()));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ResponseDTO<>(404, "Elogio não encontrado.", null));
+        return elogioOpt.map(elogio ->
+            ResponseEntity.ok(new ResponseDto<>("Elogio encontrado com sucesso.", elogio))
+        ).orElseGet(() ->
+            ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ResponseDto<>("Elogio não encontrado.", null))
+        );
     }
 
 
@@ -98,19 +95,15 @@ public class ElogioController {
         @ApiResponse(responseCode = "404", description = "Elogio não encontrado para atualizar.")
     })
    @PutMapping("/{id}")
-    public ResponseEntity<ResponseDTO<Elogio>> updateElogio(@PathVariable Long id, @RequestBody RequestDTO elogioDTO) {
-        Elogio elogioAtualizado = elogioService.updateElogio(
-            id,
-            elogioDTO.getTitulo(),
-            elogioDTO.getDescricao()
-        );
+    public ResponseEntity<ResponseDto<Elogio>> updateElogio(@PathVariable Long id, @RequestBody RequestDto elogioDTO) {
+        Elogio elogioAtualizado = elogioService.updateElogio(id, elogioDTO);
 
         if (elogioAtualizado == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ResponseDTO<>(404, "Elogio não encontrado para atualizar.", null));
+                .body(new ResponseDto<>("Elogio não encontrado para atualizar.", null));
         }
         return ResponseEntity.status(HttpStatus.OK)
-               .body(new ResponseDTO<>(200, "Elogio atualizado com sucesso.", elogioAtualizado));
+               .body(new ResponseDto<>("Elogio atualizado com sucesso.", elogioAtualizado));
                
     }
 
@@ -119,17 +112,15 @@ public class ElogioController {
     @Operation(summary = "Deletar um elogio", description = "Remove um elogio pelo seu ID.")
     @ApiResponse(responseCode = "200", description = "Elogio deletado com sucesso.")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDTO<String>> deleteElogio(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto<String>> deleteElogio(@PathVariable Long id) {
         try {
             elogioService.deleteElogioByID(id);
-            return ResponseEntity.ok(new ResponseDTO<>(200, "Elogio deletado com sucesso.", null));
+            return ResponseEntity.ok(new ResponseDto<>("Elogio deletado com sucesso.", null));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ResponseDTO<>(404, e.getMessage(), null));
+                .body(new ResponseDto<>(e.getMessage(), null));
         }
     }
-
-
     
 }
 

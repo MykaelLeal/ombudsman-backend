@@ -1,4 +1,4 @@
-package com.ombudsman.ombudsman.dto.userDTO;
+package com.ombudsman.ombudsman.dtos.userDto;
 
 
 public record RecoveryUserDto(

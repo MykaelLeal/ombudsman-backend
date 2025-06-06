@@ -1,4 +1,4 @@
-package com.ombudsman.ombudsman.dto;
+package com.ombudsman.ombudsman.dtos.responseMessageDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseDTO<T> {
-    private int status;
+public class ResponseDto<T> {
+    
     private String message;
     private T data;
 }

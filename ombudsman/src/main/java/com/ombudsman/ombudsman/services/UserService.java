@@ -1,4 +1,4 @@
-package com.ombudsman.ombudsman.service;
+package com.ombudsman.ombudsman.services;
 
 
 import java.util.List;
@@ -11,14 +11,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.ombudsman.ombudsman.dto.userDTO.CreateUserDto;
-import com.ombudsman.ombudsman.dto.userDTO.LoginUserDTO;
-import com.ombudsman.ombudsman.dto.userDTO.RecoveryJwtTokenDto;
-import com.ombudsman.ombudsman.entitie.User;
-import com.ombudsman.ombudsman.repository.UserRepository;
+import com.ombudsman.ombudsman.dtos.userDto.LoginRecordDto;
+import com.ombudsman.ombudsman.dtos.userDto.RecoveryJwtTokenDto;
+import com.ombudsman.ombudsman.dtos.userDto.UserRecordDto;
+import com.ombudsman.ombudsman.entities.User;
+import com.ombudsman.ombudsman.repositories.UserRepository;
 import com.ombudsman.ombudsman.security.auth.JwtTokenService;
 import com.ombudsman.ombudsman.security.config.SecurityConfiguration;
 import com.ombudsman.ombudsman.security.userdetails.UserDetailsImpl;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
@@ -36,10 +38,10 @@ public class UserService {
     private SecurityConfiguration securityConfiguration;
 
     // Método responsável por autenticar um usuário e retornar um token JWT
-    public RecoveryJwtTokenDto authenticateUser(LoginUserDTO loginUserDto) {
+    public RecoveryJwtTokenDto authenticateUser(LoginRecordDto loginUserDto) {
         // Cria um objeto de autenticação com o email e a senha do usuário
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(loginUserDto.getEmail(), loginUserDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginUserDto.email(), loginUserDto.password());
 
         // Autentica o usuário com as credenciais fornecidas
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -50,27 +52,30 @@ public class UserService {
         // Gera um token JWT para o usuário autenticado
         return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
     }
+    
 
-    // Método responsável por criar um usuário
-    public User createUser(CreateUserDto createUserDto) {
+    @Transactional
+    public User createUser(UserRecordDto createUserDto) {
+        // Verifica se o email já existe
         if (userRepository.existsByEmail(createUserDto.email())) {
-           throw new RuntimeException("Email já cadastrado.");
-    }
+            throw new RuntimeException("Email já cadastrado.");
+        }
+
         // Cria um novo usuário com os dados fornecidos
         User newUser = User.builder()
-        .nome(createUserDto.nome())
-        .email(createUserDto.email())
-        // Codifica a senha do usuário com o algoritmo bcrypt
-        .password(securityConfiguration.passwordEncoder().encode(createUserDto.password()))
-        .build();
+            .nome(createUserDto.name())
+            .email(createUserDto.email())
+            .password(securityConfiguration.passwordEncoder().encode(createUserDto.password()))
+            .build();
 
         // Salva o novo usuário no banco de dados
         return userRepository.save(newUser);
     }
 
+
     // Método Responsavel por buscar todos os usuários
     public List<User> getAllUsers() {
-      return userRepository.findAll();
+        return userRepository.findAll();
 
     }
 
@@ -95,18 +100,24 @@ public class UserService {
 
 
     // Método responsavel por atualizar o usuário por ID
-    public User updateUser(Long userId, String novoNome, String novoEmail, String novaSenha) {
-      User user = userRepository.findById(userId)
-        .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+    @Transactional
+    public User updateUser(Long userId, UserRecordDto userRecordDto) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
-        user.setNome(novoNome);
-        user.setEmail(novoEmail);
-        user.setPassword(novaSenha); 
+        user.setNome(userRecordDto.name());
+        user.setEmail(userRecordDto.email());
+        // Codifica a senha antes de salvar
+        String senhaCodificada = securityConfiguration.passwordEncoder().encode(userRecordDto.password());
+        user.setPassword(senhaCodificada);
+
         return userRepository.save(user);
     }
 
 
+
     // Deletar usuário por ID
+    @Transactional
     public void deleteUserById(Long id) {
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("Usuário não encontrado.");

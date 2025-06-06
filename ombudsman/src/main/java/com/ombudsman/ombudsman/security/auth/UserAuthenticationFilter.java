@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.ombudsman.ombudsman.entitie.User;
-import com.ombudsman.ombudsman.repository.UserRepository;
+import com.ombudsman.ombudsman.entities.User;
+import com.ombudsman.ombudsman.repositories.UserRepository;
 import com.ombudsman.ombudsman.security.config.SecurityConfiguration;
 import com.ombudsman.ombudsman.security.userdetails.UserDetailsImpl;
 

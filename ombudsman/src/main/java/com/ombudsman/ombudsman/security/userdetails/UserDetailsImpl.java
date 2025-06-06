@@ -7,7 +7,7 @@ import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.ombudsman.ombudsman.entitie.User;
+import com.ombudsman.ombudsman.entities.User;
 
 import lombok.Getter;
 
